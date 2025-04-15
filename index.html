@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Ga weg</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: 'Comic Sans MS', cursive;
+      font-size: 3em;
+      color: white;
+      animation: flash 1s infinite;
+      overflow: hidden;
+      margin: 0;
+      padding-top: 100px;
+      height: 100vh;
+    }
+
+    @keyframes flash {
+      0% { background-color: red; }
+      25% { background-color: blue; }
+      50% { background-color: lime; }
+      75% { background-color: yellow; }
+      100% { background-color: purple; }
+    }
+
+    img {
+      border: 5px solid white;
+      border-radius: 20px;
+      margin-top: 20px;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ga weg</h1>
+  <img src="https://www.pngkit.com/png/full/316-3166192_share-this-image-misha-collins-hot.png" alt="Misha Collins" width="300">
+  
+  <audio autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2023/03/28/audio_45f9a1910d.mp3?filename=party-horn-sound-131000.mp3" type="audio/mpeg">
+    Je browser ondersteunt geen audio.
+  </audio>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <script>
+    // Confetti using Canvas
+    const confettiCanvas = document.getElementById('confetti-canvas');
+    const ctx = confettiCanvas.getContext('2d');
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+
+    const confetti = [];
+
+    for (let i = 0; i < 200; i++) {
+      confetti.push({
+        x: Math.random() * confettiCanvas.width,
+        y: Math.random() * confettiCanvas.height,
+        r: Math.random() * 6 + 4,
+        d: Math.random() * 5 + 1,
+        color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+      });
+    }
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      confetti.forEach(c => {
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2, false);
+        ctx.fillStyle = c.color;
+        ctx.fill();
+        c.y += c.d;
+        if (c.y > confettiCanvas.height) {
+          c.y = -c.r;
+          c.x = Math.random() * confettiCanvas.width;
+        }
+      });
+      requestAnimationFrame(drawConfetti);
+    }
+
+    drawConfetti();
+  </script>
+</body>
+</html>
